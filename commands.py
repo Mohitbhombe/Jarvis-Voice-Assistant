@@ -15,16 +15,30 @@ def get_date():
     date_str = datetime.datetime.now().strftime("%B %d, %Y")
     return f"Today's date is {date_str}."
 
-def open_website(site_name):
+def open_website(command):
     """Opens popular websites in the default web browser."""
-    if "youtube" in site_name.lower():
-        webbrowser.open("https://www.youtube.com")
-        return "Opening YouTube."
-    elif "google" in site_name.lower():
-        webbrowser.open("https://www.google.com")
-        return "Opening Google."
-    else:
-        return "Sorry, I can only open YouTube and Google right now."
+    sites = {
+        "youtube": "https://www.youtube.com",
+        "google": "https://www.google.com",
+        "chatgpt": "https://chatgpt.com",
+        "whatsapp": "https://web.whatsapp.com",
+        "facebook": "https://www.facebook.com",
+        "instagram": "https://www.instagram.com",
+        "github": "https://github.com"
+    }
+    
+    for site, url in sites.items():
+        if f"open {site}" in command.lower():
+            webbrowser.open(url)
+            # Make sure the name looks nice when Jarvis says it
+            display_name = site.capitalize()
+            if site == "chatgpt": display_name = "ChatGPT"
+            if site == "whatsapp": display_name = "WhatsApp"
+            if site == "youtube": display_name = "YouTube"
+            
+            return f"Opening {display_name}."
+            
+    return "Sorry, I don't know how to open that website yet."
 
 def search_wikipedia(query):
     """Searches Wikipedia and returns a 2-sentence summary."""
@@ -83,7 +97,7 @@ def process_command(command, engine):
         return get_date()
         
     # 3. Open Websites
-    elif "open youtube" in command or "open google" in command:
+    elif "open" in command and any(site in command for site in ["youtube", "google", "chatgpt", "whatsapp", "facebook", "instagram", "github"]):
         return open_website(command)
         
     # 4. Wikipedia Search
