@@ -141,6 +141,24 @@ def process_command(command, engine):
         except Exception as e:
             return "Please specify what to remind you and when. For example: remind me to drink water in 10 seconds."
             
-    # 8. Unrecognized Command
+    # 8. Basic Conversation
+    elif "how are you" in command:
+        return "I am doing great, sir. How can I help you today?"
+        
+    elif "who are you" in command or "what is your name" in command:
+        return "I am Jarvis, your personal voice assistant created by Mohit."
+        
+    elif "who created you" in command or "who made you" in command:
+        return "I was created by Mohit."
+        
+    elif "hello" in command or "hi " in command or "hey " in command:
+        return "Hello sir! How can I assist you?"
+        
+    # 9. Fallback to Wikipedia for basic general knowledge questions
+    elif "who is" in command or "what is" in command or "where is" in command:
+        # Re-use the Wikipedia search function for general questions
+        return search_wikipedia(command)
+        
+    # 10. Unrecognized Command
     else:
         return "I am not sure how to help with that. Please try another command."
