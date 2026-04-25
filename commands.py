@@ -78,6 +78,17 @@ def get_joke():
     except Exception as e:
         return "Sorry, my joke book is currently unavailable."
 
+def get_my_location():
+    """Gets the user's current city based on their IP address."""
+    try:
+        response = requests.get('https://ipinfo.io/json')
+        data = response.json()
+        city = data.get('city', 'Unknown City')
+        region = data.get('region', 'Unknown Region')
+        return city, f"You are currently in {city}, {region}."
+    except Exception as e:
+        return "Delhi", "Sorry, I couldn't detect your exact location."
+
 def process_command(command, engine):
     """
     Main logic hub. Takes the user's spoken command and decides what feature to run.
@@ -108,14 +119,18 @@ def process_command(command, engine):
     elif "joke" in command:
         return get_joke()
         
-    # 6. Weather updates
-    elif "weather" in command:
+    # 6. Location and Weather updates
+    elif "where am i" in command or "my location" in command:
+        city, message = get_my_location()
+        return message
+        
+    elif "weather" in command or "temperature" in command:
         # Extract city name (assuming user says "weather in [city]")
         if "in" in command:
             city = command.split("in")[-1].strip()
         else:
-            # If no city is specified, default to a common one or ask
-            city = "Delhi"
+            # Automatically detect user's location
+            city, _ = get_my_location()
             
         return get_weather(city)
         
