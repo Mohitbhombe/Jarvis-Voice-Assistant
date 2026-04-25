@@ -4,7 +4,10 @@ import datetime
 import webbrowser
 import wikipedia
 import requests
-import pyautogui
+try:
+    import pyautogui
+except ImportError:
+    pyautogui = None
 import urllib.request
 import urllib.parse
 import re
@@ -110,6 +113,8 @@ def get_joke():
         return "Sorry, my joke book is currently unavailable."
 
 def take_screenshot():
+    if pyautogui is None:
+        return "Screenshot feature is not available in the cloud web version."
     try:
         # Create screenshots folder in the current working directory
         if not os.path.exists("screenshots"):
