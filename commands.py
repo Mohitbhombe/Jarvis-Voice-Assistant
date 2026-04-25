@@ -2,6 +2,9 @@ import datetime
 import webbrowser
 import wikipedia
 import requests
+import urllib.request
+import urllib.parse
+import re
 from weather import get_weather
 from reminder import set_reminder
 
@@ -78,6 +81,26 @@ def get_joke():
     except Exception as e:
         return "Sorry, my joke book is currently unavailable."
 
+def play_music(song_name):
+    """Searches YouTube for the song and plays the first result."""
+    try:
+        # Format the search query for YouTube
+        query_string = urllib.parse.urlencode({"search_query": song_name})
+        html_content = urllib.request.urlopen("https://www.youtube.com/results?" + query_string)
+        
+        # Search for video IDs in the HTML using regular expressions
+        search_results = re.findall(r'watch\?v=(\S{11})', html_content.read().decode())
+        
+        if search_results:
+            # Open the first video result in the browser
+            url = "https://www.youtube.com/watch?v=" + search_results[0]
+            webbrowser.open(url)
+            return f"Playing {song_name} on YouTube."
+        else:
+            return f"Sorry, I couldn't find the song {song_name}."
+    except Exception as e:
+        return "Sorry, I encountered an error while trying to play the music."
+
 def get_my_location():
     """Gets the user's current city based on their IP address."""
     try:
@@ -111,6 +134,15 @@ def process_command(command, engine):
     elif "open" in command and any(site in command for site in ["youtube", "google", "chatgpt", "whatsapp", "facebook", "instagram", "github"]):
         return open_website(command)
         
+    # 3.5. Play Music
+    elif "play" in command:
+        # Extract the song name from the command (e.g. "play shape of you")
+        song = command.replace("play", "").strip()
+        if song:
+            return play_music(song)
+        else:
+            return "Please specify what you want me to play."
+            
     # 4. Wikipedia Search
     elif "wikipedia" in command:
         return search_wikipedia(command)
@@ -176,4 +208,4 @@ def process_command(command, engine):
         
     # 10. Unrecognized Command
     else:
-        return " bol lavde  ."
+        return " Dipali and Mohit  ."
