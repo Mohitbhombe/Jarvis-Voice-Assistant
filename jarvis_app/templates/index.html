@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis - Voice Assistant</title>
+    <!-- Link to our external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>🤖 Jarvis</h1>
+            <p class="subtitle">by Mohit Vikas Bhombe</p>
+        </header>
+
+        <!-- Chat History Section -->
+        <div class="chat-container" id="chat-container">
+            <!-- Initial Greeting -->
+            <div class="message jarvis">
+                <p>Hello Sir! I am Jarvis. How can I help you today?</p>
+            </div>
+            <!-- Future messages will be added here by JavaScript -->
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-area">
+            <button id="mic-btn" class="mic-btn ready" title="Click to Speak">🎤</button>
+            <input type="text" id="text-input" placeholder="Type a message or click the mic to speak..." autocomplete="off">
+            <button id="send-btn" class="send-btn">Send</button>
+        </div>
+        
+        <!-- Status Indicator -->
+        <p id="status-text" class="status-text">Ready</p>
+    </div>
+
+    <!-- Link to our external JavaScript file -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
