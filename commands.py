@@ -5,6 +5,8 @@ import requests
 import urllib.request
 import urllib.parse
 import re
+import os
+import pyautogui
 from weather import get_weather
 from reminder import set_reminder
 
@@ -101,6 +103,26 @@ def play_music(song_name):
     except Exception as e:
         return "Sorry, I encountered an error while trying to play the music."
 
+def take_screenshot():
+    """Takes a screenshot and saves it with a timestamp."""
+    try:
+        # Create screenshots folder if it doesn't exist
+        if not os.path.exists("screenshots"):
+            os.makedirs("screenshots")
+            
+        # Create a filename with current timestamp (e.g. screenshot_143022.png)
+        time_str = datetime.datetime.now().strftime("%H%M%S")
+        filename = f"screenshot_{time_str}.png"
+        filepath = os.path.join("screenshots", filename)
+        
+        # Take the screenshot and save it
+        screenshot = pyautogui.screenshot()
+        screenshot.save(filepath)
+        
+        return f"Screenshot le liya! {filename} mein save ho gaya."
+    except Exception as e:
+        return "Sorry, there was an error taking the screenshot."
+
 def get_my_location():
     """Gets the user's current city based on their IP address."""
     try:
@@ -142,6 +164,10 @@ def process_command(command, engine):
             return play_music(song)
         else:
             return "Please specify what you want me to play."
+            
+    # 3.6. Take Screenshot
+    elif "take screenshot" in command or "screenshot" in command:
+        return take_screenshot()
             
     # 4. Wikipedia Search
     elif "wikipedia" in command:
@@ -208,4 +234,4 @@ def process_command(command, engine):
         
     # 10. Unrecognized Command
     else:
-        return " Dipali and Mohit  ."
+        return " Mohit Bhombe ."
